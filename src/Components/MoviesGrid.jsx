@@ -1,21 +1,15 @@
 import React from "react";
 import "../styles.css";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import MovieCard from "./MovieCard";
 
-export default function MoviesGrid() {
-  const [movies, setMovies] = useState([]);
+export default function MoviesGrid({movies, watchlist, toggleWatchlist}) {
+  
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
-
-  useEffect(() => {
-    fetch("movies.json")
-      .then((response) => response.json())
-      .then((data) => setMovies(data));
-  }, []);
 
   const [genre, setGenre] = useState("All Genres");
   const [rating, setRating] = useState("All");
@@ -106,7 +100,12 @@ export default function MoviesGrid() {
 
       <div className="movies-grid">
         {fileredMovies.map((movie) => (
-          <MovieCard movie={movie} movieId={movie.id}></MovieCard>
+          <MovieCard 
+            movie={movie} 
+            movieId={movie.id}
+            isWatchListed={watchlist.includes(movie.id)}
+            toggleWatchlist={toggleWatchlist}>
+          </MovieCard>
         ))}
       </div>
     </div>
