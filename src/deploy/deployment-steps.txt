@@ -1,0 +1,14 @@
+create a repository on github
+coppy ssh url of the repo
+open vs code terminal and 
+run : npm install gh-pages --save-dev
+git remote add origin git@github.com:Sagar081JH/Age-Calculator-Client.git
+then run : git remote add origin <repo ssh url>
+open package.json and type below obj :
+"homepage": "http://<git-id>.github.io/<repo-name>",
+
+inside scripts paste :
+"predeploy":"npm run build",
+"deploy":"gh-pages -d build"
+
+npm run deploy

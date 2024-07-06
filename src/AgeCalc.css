@@ -1,0 +1,30 @@
+
+input::-webkit-calendar-picker-indicator {
+  background-color:rgb(248, 243, 243);
+  color: rgba(0, 0, 0, 0);
+  opacity: 1
+}
+
+@media screen and (max-width :490px){
+  #err{
+    font-size: 11px;
+  }
+}
+
+#todayDateInputDark::placeholder {
+  color: white;
+  opacity: 0.5;
+}
+#birthDateInputDark::placeholder {
+  color: white;
+  opacity: 0.5;
+}
+
+#todayDateInputLight::placeholder {
+  color: black;
+  opacity: 0.5;
+}
+#birthDateInputLight::placeholder {
+  color: black;
+  opacity: 0.5;
+}
