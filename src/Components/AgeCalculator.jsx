@@ -1,5 +1,10 @@
 import React, { useState } from "react";
 import "../AgeCalc.css";
+import Age from "./Age";
+import ExtraInfo from "./ExtraInfo";
+import NextBirthday from "./NextBirthday";
+import Greeting from "./Greeting";
+import DevName from "./DevName";
 
 export default function AgeCalculator() {
   const [year, setYear] = useState("0");
@@ -31,23 +36,15 @@ export default function AgeCalculator() {
   const [totalMinutes, setTotalMinutes] = useState("0");
   const [totalSeconds, setTotalSeconds] = useState("0");
 
-  const [developerName, setDeveloperName] = useState(
-    "Developer : Sagar Ghumare"
-  );
-
   const [themeToggle, setThemeToggle] = useState(false);
 
-  const [bithDayGreeting, setBirthDayGreeting] = useState("");
+  const [birthdayGreeting, setBirthDayGreeting] = useState("");
 
   if (themeToggle) {
     document.body.style.backgroundColor = "black";
   } else {
     document.body.style.backgroundColor = "white";
   }
-
-  setTimeout(() => {
-    setDeveloperName("");
-  }, 20000);
 
   const calculateAge = () => {
     if (dateOfBirth === "" || todaysDate === "") {
@@ -72,6 +69,7 @@ export default function AgeCalculator() {
       setDay("0");
       setBirthDateDay("");
       setNextBirthdayDays("0");
+      setNextBirthdayMonths("0");
       setTotalYears("0");
       setTotalSeconds("0");
       setTotalMinutes("0");
@@ -170,9 +168,45 @@ export default function AgeCalculator() {
         ageMonths--;
       }
 
-      setNextBirthdayMonths(
-        `${Math.abs(birthDate1.birthMonth - 1 - currentDate.getMonth())}`
-      );
+      if (birthDate.getMonth() >= currentDate.getMonth()) {
+        if (birthDate.getMonth() == currentDate.getMonth()) {
+          if (ageDays == 0) {
+            setNextBirthdayMonths("12");
+            setNextBirthdayDays("0");
+          } else {
+            setNextBirthdayDays(`${31 - ageDays}`);
+            if (birthDate.getDate() > currentDate.getDate()) {
+              setNextBirthdayMonths("0");
+            } else {
+              setNextBirthdayMonths("11");
+            }
+          }
+        } else if (birthDate.getMonth() > currentDate.getMonth()) {
+          let months = birthDate.getMonth() - currentDate.getMonth();
+          if (ageDays == 0) {
+            setNextBirthdayMonths(months);
+            setNextBirthdayDays("0");
+          } else {
+            setNextBirthdayDays(`${31 - ageDays}`);
+            if (birthDate.getDate() > currentDate.getDate()) {
+              setNextBirthdayMonths(months);
+            } else {
+              setNextBirthdayMonths(months - 1);
+            }
+          }
+        }
+      } else {
+        let months = 12 - (currentDate.getMonth() - birthDate.getMonth());
+        if (ageDays == 0) {
+          setNextBirthdayMonths(months);
+          setNextBirthdayDays("0");
+        } else {
+          let months = 11 - (currentDate.getMonth() - birthDate.getMonth());
+          setNextBirthdayMonths(months);
+          setNextBirthdayDays(`${30 - ageDays}`);
+        }
+      }
+
       setYear(ageYears);
       setMonth(ageMonths);
       setDay(ageDays);
@@ -185,7 +219,6 @@ export default function AgeCalculator() {
       let week = Math.floor(hours / 168);
       let month = Math.floor(hours / 730);
 
-      setNextBirthdayDays(31 - ageDays);
       setTotalYears(ageYears);
       setTotalSeconds(seconds);
       setTotalMinutes(minutes);
@@ -194,9 +227,21 @@ export default function AgeCalculator() {
       setTotalMonths(month);
 
       if (ageMonths === 0 && ageDays === 0) {
-        setBirthDayGreeting(`Happy ${ageYears}th Birthday !!!`);
-        setNextBirthdayDays("0");
-        setNextBirthdayMonths("12");
+        let suffix = "";
+        switch (ageYears) {
+          case 1:
+            suffix = "st";
+            break;
+          case 2:
+            suffix = "nd";
+            break;
+          case 3:
+            suffix = "rd";
+            break;
+          default:
+            suffix = "th";
+        }
+        setBirthDayGreeting(`Happy ${ageYears + suffix} Birthday !!!`);
       } else {
         setBirthDayGreeting("");
       }
@@ -209,307 +254,120 @@ export default function AgeCalculator() {
   }
 
   return (
-    <>
-      <div className="container p-2">
-        <div
-          className={`p-3 rounded row text-center ${
-            themeToggle ? "bg-dark text-light" : "bg-light text-dark"
-          }`}
-        >
-          <span className="fs-4 col-md-7 col-sm-7 col-6 col-lg-10">
-            Age Calculator
-          </span>
-          <div className="form-check form-switch col-md-5 col-sm-5 col-6 col-lg-2 text-end mt-2 pt-2">
-            <div>
-              <input
-                className="form-check-input px-0 mx-0 "
-                type="checkbox"
-                role="switch"
-                id="flexSwitchCheckDefault"
-                onClick={() => setThemeToggle(!themeToggle)}
-              />
-            </div>
-            <div className="px-0 mx-0">{`${
-              themeToggle ? "Light Mode" : "Dark Mode"
-            }`}</div>
+    <div className="container p-2">
+      <div
+        className={`p-3 rounded row text-center ${
+          themeToggle ? "text-light" : "text-dark"
+        }`}
+      >
+        <span className="fs-4 col-md-7 col-sm-7 col-6 col-lg-10">
+          Age Calculator
+        </span>
+        <div className="form-check form-switch col-md-5 col-sm-5 col-6 col-lg-2 text-end mt-2 pt-2">
+          <div>
+            <input
+              className="form-check-input px-0 mx-0 "
+              type="checkbox"
+              role="switch"
+              id="flexSwitchCheckDefault"
+              onClick={() => setThemeToggle(!themeToggle)}
+            />
           </div>
-        </div>
-        <hr />
-        <div id="dev" className="text-center fw-medium">
-          <span className={` ${themeToggle ? "text-warning" : "text-success"}`}>
-            {developerName}
-          </span>
-        </div>
-        <div className="row">
-          <span className="col-6">
-            <h5 className={`${themeToggle ? "text-success" : "text-primary"}`}>
-              Today's Date
-            </h5>
-          </span>
-          <span id="inputError" className="col-6 text-danger text-end">
-            <span className="text-success fs-8">{currentDateDay}</span>
-            <span id="err">{errorTodaysDate}</span>
-          </span>
-        </div>
-        <div>
-          <input
-            id={`${themeToggle ? "todayDateInputDark" : "todayDateInputLight"}`}
-            className={`form-control ${
-              themeToggle ? "bg-dark text-light" : "bg-light text-dark"
-            }`}
-            placeholder="DD/MM/YYYY"
-            value={todaysDate}
-            onChange={(e) => setTodaysDate(e.target.value)}
-          ></input>
-        </div>
-        <div className="row mt-2 pt-2">
-          <span
-            className={`col-5 ${themeToggle ? "text-success" : "text-primary"}`}
-          >
-            <h5>Date of Birth</h5>
-          </span>
-          <span id="inputError" className="col-7 text-danger text-end">
-            <span className="text-success fs-6">{birthDateDay}</span>
-            <span id="err">{errorDateOfBirth}</span>
-          </span>
-        </div>
-        <div>
-          <input
-            id={`${themeToggle ? "birthDateInputDark" : "birthDateInputLight"}`}
-            className={`form-control ${
-              themeToggle ? "bg-dark text-light" : "bg-light text-dark"
-            }`}
-            placeholder="DD/MM/YYYY"
-            value={dateOfBirth}
-            onChange={(e) => setDateOfBirth(e.target.value.toString())}
-          ></input>
-        </div>
-        <div className="text-center mt-3 pt-3">
-          <button
-            className="btn btn-info w-50 p-2"
-            onClick={() => calculateAge()}
-          >
-            Calculate
-          </button>
-          <span className="mx-1"></span>
-          <button className="btn btn-info w-25 p-2" onClick={() => clear()}>
-            Clear
-          </button>
-        </div>
-        <div
-          className={`text-center fs-1 mt-3 pt-3 ${
-            themeToggle ? "text-warning" : "text-primary"
-          }`}
-        >
-          {bithDayGreeting}
-        </div>
-        <div className="mt-2 pt-2">
-          <hr />
-          <h5 className={`${themeToggle ? "text-info" : "text-primary"}`}>
-            Age
-          </h5>
-          <div className="mx-5 border border-primary rounded">
-            <table className="table table-light">
-              <th
-                className={`text-center ${
-                  themeToggle ? "text-info" : "text-success"
-                }`}
-              >
-                Year
-              </th>
-              <th
-                className={`text-center ${
-                  themeToggle ? "text-info" : "text-success"
-                }`}
-              >
-                Months
-              </th>
-              <th
-                className={`text-center ${
-                  themeToggle ? "text-info" : "text-success"
-                }`}
-              >
-                Days
-              </th>
-              <tbody>
-                <td
-                  className={`text-center ${
-                    themeToggle ? "text-light" : "text-success-emphasis"
-                  }`}
-                >
-                  {year}
-                </td>
-                <td
-                  className={`text-center ${
-                    themeToggle ? "text-light" : "text-success-emphasis"
-                  }`}
-                >
-                  {month}
-                </td>
-                <td
-                  className={`text-center ${
-                    themeToggle ? "text-light" : "text-success-emphasis"
-                  }`}
-                >
-                  {day}
-                </td>
-              </tbody>
-            </table>
-          </div>
-          <div className="mt-2 pt-2">
-            <hr />
-            <h5 className={`${themeToggle ? "text-info" : "text-primary"}`}>
-              Next Birthday
-            </h5>
-            <div className="mx-5 mt-2 border border-primary rounded">
-              <table className="table table-light">
-                <th
-                  className={`text-center ${
-                    themeToggle ? "text-info" : "text-success"
-                  }`}
-                >
-                  Months
-                </th>
-                <th
-                  className={`text-center ${
-                    themeToggle ? "text-info" : "text-success"
-                  }`}
-                >
-                  Days
-                </th>
-                <tbody>
-                  <td
-                    className={`text-center ${
-                      themeToggle ? "text-light" : "text-success-emphasis"
-                    }`}
-                  >
-                    {nextBirthdayMonths}
-                  </td>
-                  <td
-                    className={`text-center ${
-                      themeToggle ? "text-light" : "text-success-emphasis"
-                    }`}
-                  >
-                    {nextBirthdayDays}
-                  </td>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div className="mt-2 pt-2">
-            <hr />
-            <h5 className={`${themeToggle ? "text-info" : "text-primary"}`}>
-              Extra Info
-            </h5>
-            <div className="mx-5 mt-2 border border-primary rounded">
-              <table
-                className={`table ${
-                  themeToggle ? "table-dark" : "table-light"
-                } mb-0 pb-0`}
-              >
-                <tbody>
-                  <tr>
-                    <td
-                      className={`text-center ${
-                        themeToggle ? "text-info" : "text-success"
-                      }`}
-                    >
-                      Total Years
-                    </td>
-                    <td
-                      className={`${
-                        themeToggle ? "text-light" : "text-dark"
-                      } text-start`}
-                    >
-                      {totalYears}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td
-                      className={`text-center ${
-                        themeToggle ? "text-info" : "text-success"
-                      }`}
-                    >
-                      Total Months
-                    </td>
-                    <td
-                      className={` ${
-                        themeToggle ? "text-light" : "text-dark"
-                      } text-start`}
-                    >
-                      {totalMonths}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td
-                      className={`text-center ${
-                        themeToggle ? "text-info" : "text-success"
-                      }`}
-                    >
-                      Total Week
-                    </td>
-                    <td
-                      className={` ${
-                        themeToggle ? "text-light" : "text-dark"
-                      } text-start`}
-                    >
-                      {totalWeek}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td
-                      className={`text-center ${
-                        themeToggle ? "text-info" : "text-success"
-                      }`}
-                    >
-                      Total Hours
-                    </td>
-                    <td
-                      className={`${
-                        themeToggle ? "text-light" : "text-dark"
-                      } text-start `}
-                    >
-                      {totalHours}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td
-                      className={`text-center ${
-                        themeToggle ? "text-info" : "text-success"
-                      }`}
-                    >
-                      Total Minutes
-                    </td>
-                    <td
-                      className={` ${
-                        themeToggle ? "text-light" : "text-dark"
-                      } text-start`}
-                    >
-                      {totalMinutes}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td
-                      className={`text-center ${
-                        themeToggle ? "text-info" : "text-success"
-                      }`}
-                    >
-                      Total Seconds
-                    </td>
-                    <td
-                      className={`${
-                        themeToggle ? "text-light" : "text-dark"
-                      } text-start `}
-                    >
-                      {totalSeconds}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+          <div className="px-0 mx-0">{`${
+            themeToggle ? "Light Mode" : "Dark Mode"
+          }`}</div>
         </div>
       </div>
-    </>
+      <hr className={`${themeToggle ? "text-light" : "text-dark"}`} />
+      <DevName themeToggle={themeToggle} />
+      <div className="row">
+        <span className="col-6">
+          <h5 className={`${themeToggle ? "text-success" : "text-primary"}`}>
+            Today's Date
+          </h5>
+        </span>
+        <span id="inputError" className="col-6 text-danger text-end">
+          <span
+            className={`fs-8 ${themeToggle ? "text-info" : "text-success"}`}
+          >
+            {currentDateDay}
+          </span>
+          <span id="err">{errorTodaysDate}</span>
+        </span>
+      </div>
+      <div>
+        <input
+          id={`${themeToggle ? "todayDateInputDark" : "todayDateInputLight"}`}
+          className={`form-control ${
+            themeToggle ? "bg-dark text-light" : "bg-light text-dark"
+          }`}
+          placeholder="DD/MM/YYYY"
+          value={todaysDate}
+          onChange={(e) => setTodaysDate(e.target.value)}
+        ></input>
+      </div>
+      <div className="row mt-2 pt-2">
+        <span
+          className={`col-5 ${themeToggle ? "text-success" : "text-primary"}`}
+        >
+          <h5>Date of Birth</h5>
+        </span>
+        <span id="inputError" className="col-7 text-danger text-end">
+          <span
+            className={`fs-8 ${themeToggle ? "text-info" : "text-success"}`}
+          >
+            {birthDateDay}
+          </span>
+          <span id="err">{errorDateOfBirth}</span>
+        </span>
+      </div>
+      <div>
+        <input
+          id={`${themeToggle ? "birthDateInputDark" : "birthDateInputLight"}`}
+          className={`form-control ${
+            themeToggle ? "bg-dark text-light" : "bg-light text-dark"
+          }`}
+          placeholder="DD/MM/YYYY"
+          value={dateOfBirth}
+          onChange={(e) => setDateOfBirth(e.target.value.toString())}
+        ></input>
+      </div>
+      <div className="text-center mt-3 pt-3">
+        <button
+          className="btn btn-info w-50 p-2"
+          onClick={() => calculateAge()}
+        >
+          Calculate
+        </button>
+        <span className="mx-1"></span>
+        <button className="btn btn-info w-25 p-2" onClick={() => clear()}>
+          Clear
+        </button>
+      </div>
+      <Greeting themeToggle={themeToggle} greeting={birthdayGreeting} />
+      <div className="mt-2 pt-2">
+        <hr className={`${themeToggle ? "text-light" : "text-dark"}`} />
+        <Age
+          themeToggle={themeToggle}
+          ageYear={year}
+          ageMonth={month}
+          ageDay={day}
+        />
+        <NextBirthday
+          themeToggle={themeToggle}
+          nextBirthdayMonths={nextBirthdayMonths}
+          nextBirthdayDays={nextBirthdayDays}
+        />
+        <ExtraInfo
+          themeToggle={themeToggle}
+          totalYears={totalYears}
+          totalMonths={totalMonths}
+          totalWeek={totalWeek}
+          totalHours={totalHours}
+          totalMinutes={totalMinutes}
+          totalSeconds={totalSeconds}
+        />
+      </div>
+    </div>
   );
 }
