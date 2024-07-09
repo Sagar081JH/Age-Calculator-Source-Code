@@ -9,7 +9,6 @@ import DevName from "./DevName";
 import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 
 export default function AgeCalculator() {
@@ -26,24 +25,10 @@ export default function AgeCalculator() {
   const [nextBirthdayMonths, setNextBirthdayMonths] = useState("0");
   const [nextBirthdayDays, setNextBirthdayDays] = useState("0");
 
-  const [value, setValue] = useState(dayjs(""));
-
-  console.log("value : " + value.toDate().toLocaleDateString());
-
-  let dobValue = value.toDate().toLocaleDateString();
-
-  console.log("dobValue : " + dobValue);
-
   let todayDateValue1 = new Date().toLocaleDateString();
-
   let todayD1 = todayDateValue1.split("/");
-
-  let todayDate = todayD1[1];
-  let todayMonth = todayD1[0];
-  let todayYears = todayD1[2];
-
-  let todaysDateString2 = todayDate + "-" + todayMonth + "-" + todayYears;
-
+  let todaysDateString2 = todayD1[1] + "-" + todayD1[0] + "-" + todayD1[2];
+  console.log("todaysDateString2 : " + todayDateValue1);
   const [todayDateValue, setTodayDateValue] = useState(
     dayjs(todaysDateString2)
   );
@@ -51,8 +36,14 @@ export default function AgeCalculator() {
     "todayDateValue : " + todayDateValue.toDate().toLocaleDateString()
   );
 
-  console.log("dobValue : " + dobValue);
+  const [value, setValue] = useState(dayjs(""));
+  console.log("value : " + value.toDate().toLocaleDateString());
 
+  let dobValue = value.toDate().toLocaleDateString();
+
+  console.log("dobValue22 : " + dobValue.includes("Invalid"));
+
+  console.log("dobValue1 : " + dobValue);
   const [dateOfBirth, setDateOfBirth] = useState(dobValue);
 
   const [todaysDate, setTodaysDate] = useState(todayDateValue1);
@@ -78,8 +69,14 @@ export default function AgeCalculator() {
   }
 
   const calculateAge = () => {
-    if (dobValue === "" || todayDateValue1 === "") {
-      if (dobValue === "") {
+    console.log("todayDateValue33 : " + todayDateValue);
+    const isDobInvalid = dobValue.includes("Invalid");
+    const isTodayDateInvalid = todayDateValue
+      .toDate()
+      .toLocaleDateString()
+      .includes("Invalid");
+    if (isDobInvalid || isTodayDateInvalid) {
+      if (isDobInvalid) {
         setBirthDateDay("");
         setDateOfBirthError("Enter Valid Date : DD/MM/YYYY");
         setBirthDayGreeting("");
@@ -87,11 +84,12 @@ export default function AgeCalculator() {
         setDateOfBirthError("");
       }
 
-      if (todayDateValue1 === "") {
+      if (isTodayDateInvalid) {
         setTodaysDateError("Enter Valid Date : DD/MM/YYYY");
         setCurrentDateDay("");
         setBirthDayGreeting("");
       } else {
+        console.log("inside else");
         setTodaysDateError("");
       }
 
@@ -112,7 +110,7 @@ export default function AgeCalculator() {
       setTodaysDateError("");
 
       let birth = dobValue.split("/");
-      let todayD1 = todayDateValue1.split("/");
+      let todayD1 = todayDateValue.toDate().toLocaleDateString().split("/");
 
       if (birth.length !== 3 || todayD1.length !== 3) {
         if (birth.length !== 3) {
@@ -285,17 +283,6 @@ export default function AgeCalculator() {
 
   return (
     <div className="container p-2">
-      {/* <div>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker
-            className="form-control"
-            label="Controlled picker"
-            value={value}
-            onChange={(e) => setValue(e)}
-            renderInput={(params) => <h1 {...params} />}
-          />
-        </LocalizationProvider>
-      </div> */}
       <div
         className={`d-flex border p-1 sticky-top rounded justify-content-between ${
           themeToggle
@@ -393,13 +380,11 @@ export default function AgeCalculator() {
                       color: `${
                         themeToggle ? "white !important" : "black !important"
                       }`,
-                      background: "gery",
                     },
                     ".MuiButtonBase-root": {
                       color: `${
                         themeToggle ? "white !important" : "black !important"
                       }`,
-                      background: "gery",
                     },
                   },
                 },
