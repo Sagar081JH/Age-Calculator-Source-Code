@@ -6,6 +6,12 @@ import NextBirthday from "./NextBirthday";
 import Greeting from "./Greeting";
 import DevName from "./DevName";
 
+import dayjs from "dayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+
 export default function AgeCalculator() {
   const [year, setYear] = useState("0");
   const [month, setMonth] = useState("0");
@@ -20,11 +26,36 @@ export default function AgeCalculator() {
   const [nextBirthdayMonths, setNextBirthdayMonths] = useState("0");
   const [nextBirthdayDays, setNextBirthdayDays] = useState("0");
 
-  let todaysDateString = new Date().toLocaleDateString();
+  const [value, setValue] = useState(dayjs(""));
 
-  const [dateOfBirth, setDateOfBirth] = useState("");
+  console.log("value : " + value.toDate().toLocaleDateString());
 
-  const [todaysDate, setTodaysDate] = useState(todaysDateString);
+  let dobValue = value.toDate().toLocaleDateString();
+
+  console.log("dobValue : " + dobValue);
+
+  let todayDateValue1 = new Date().toLocaleDateString();
+
+  let todayD1 = todayDateValue1.split("/");
+
+  let todayDate = todayD1[1];
+  let todayMonth = todayD1[0];
+  let todayYears = todayD1[2];
+
+  let todaysDateString2 = todayDate + "-" + todayMonth + "-" + todayYears;
+
+  const [todayDateValue, setTodayDateValue] = useState(
+    dayjs(todaysDateString2)
+  );
+  console.log(
+    "todayDateValue : " + todayDateValue.toDate().toLocaleDateString()
+  );
+
+  console.log("dobValue : " + dobValue);
+
+  const [dateOfBirth, setDateOfBirth] = useState(dobValue);
+
+  const [todaysDate, setTodaysDate] = useState(todayDateValue1);
 
   const [errorDateOfBirth, setDateOfBirthError] = useState("");
   const [errorTodaysDate, setTodaysDateError] = useState("");
@@ -47,8 +78,8 @@ export default function AgeCalculator() {
   }
 
   const calculateAge = () => {
-    if (dateOfBirth === "" || todaysDate === "") {
-      if (dateOfBirth === "") {
+    if (dobValue === "" || todayDateValue1 === "") {
+      if (dobValue === "") {
         setBirthDateDay("");
         setDateOfBirthError("Enter Valid Date : DD/MM/YYYY");
         setBirthDayGreeting("");
@@ -56,7 +87,7 @@ export default function AgeCalculator() {
         setDateOfBirthError("");
       }
 
-      if (todaysDate === "") {
+      if (todayDateValue1 === "") {
         setTodaysDateError("Enter Valid Date : DD/MM/YYYY");
         setCurrentDateDay("");
         setBirthDayGreeting("");
@@ -80,20 +111,17 @@ export default function AgeCalculator() {
       setDateOfBirthError("");
       setTodaysDateError("");
 
-      let birth = dateOfBirth.split("/");
-      let todayD1 = todaysDate.split("/");
+      let birth = dobValue.split("/");
+      let todayD1 = todayDateValue1.split("/");
 
       if (birth.length !== 3 || todayD1.length !== 3) {
-        console.log("Inside");
         if (birth.length !== 3) {
-          console.log("Inside birthDate1");
           setDateOfBirthError("Enter valid date : DD/MM/YYYY");
           setBirthDateDay("");
         } else {
           setDateOfBirthError("");
         }
         if (todayD1.length !== 3) {
-          console.log("Inside todayD1");
           setTodaysDateError("Enter valid date : DD/MM/YYYY");
           setCurrentDateDay("");
         } else {
@@ -251,98 +279,244 @@ export default function AgeCalculator() {
   function clear() {
     setDateOfBirth("");
     setTodaysDate("");
+    setValue(dayjs(""));
+    setTodayDateValue(dayjs(""));
   }
 
   return (
     <div className="container p-2">
+      {/* <div>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            className="form-control"
+            label="Controlled picker"
+            value={value}
+            onChange={(e) => setValue(e)}
+            renderInput={(params) => <h1 {...params} />}
+          />
+        </LocalizationProvider>
+      </div> */}
       <div
-        className={`p-3 rounded row text-center ${
-          themeToggle ? "text-light" : "text-dark"
+        className={`d-flex border p-1 sticky-top rounded justify-content-between ${
+          themeToggle
+            ? "text-light bg-dark  border-secondary"
+            : "text-dark bg-light"
         }`}
       >
-        <span className="fs-4 col-md-7 col-sm-7 col-6 col-lg-10">
+        <div id="title" className="p-2 fs-2 justify-content-start">
           Age Calculator
-        </span>
-        <div className="form-check form-switch col-md-5 col-sm-5 col-6 col-lg-2 text-end mt-2 pt-2">
-          <div>
+        </div>
+
+        <div className="">
+          <span className="form-check form-switch fs-4">
             <input
-              className="form-check-input px-0 mx-0 "
+              className="form-check-input"
               type="checkbox"
               role="switch"
               id="flexSwitchCheckDefault"
               onClick={() => setThemeToggle(!themeToggle)}
             />
+          </span>
+          <div className="fs-1 mt-2">
+            {themeToggle ? (
+              <span>&#9789; </span>
+            ) : (
+              <span className="text-warning"> &#9788;</span>
+            )}
           </div>
-          <div className="px-0 mx-0">{`${
-            themeToggle ? "Light Mode" : "Dark Mode"
-          }`}</div>
         </div>
       </div>
-      <hr className={`${themeToggle ? "text-light" : "text-dark"}`} />
+
+      {/* <hr className={`${themeToggle ? "text-light" : "text-dark"}`} /> */}
       <DevName themeToggle={themeToggle} />
-      <div className="row">
-        <span className="col-6">
-          <h5 className={`${themeToggle ? "text-success" : "text-primary"}`}>
-            Today's Date
-          </h5>
-        </span>
-        <span id="inputError" className="col-6 text-danger text-end">
-          <span
-            className={`fs-8 ${themeToggle ? "text-info" : "text-success"}`}
-          >
-            {currentDateDay}
+      <div
+        className={`border rounded p-3 ${
+          themeToggle ? "border-secondary" : ""
+        }`}
+      >
+        <div className="row">
+          <span className="col-5">
+            <h5 className={`${themeToggle ? "text-info" : "text-primary"}`}>
+              Today's Date
+            </h5>
           </span>
-          <span id="err">{errorTodaysDate}</span>
-        </span>
-      </div>
-      <div>
-        <input
-          id={`${themeToggle ? "todayDateInputDark" : "todayDateInputLight"}`}
-          className={`form-control ${
-            themeToggle ? "bg-dark text-light" : "bg-light text-dark"
-          }`}
-          placeholder="DD/MM/YYYY"
-          value={todaysDate}
-          onChange={(e) => setTodaysDate(e.target.value)}
-        ></input>
-      </div>
-      <div className="row mt-2 pt-2">
-        <span
-          className={`col-5 ${themeToggle ? "text-success" : "text-primary"}`}
-        >
-          <h5>Date of Birth</h5>
-        </span>
-        <span id="inputError" className="col-7 text-danger text-end">
-          <span
-            className={`fs-8 ${themeToggle ? "text-info" : "text-success"}`}
-          >
-            {birthDateDay}
+          <span id="inputError" className="col-7 text-danger text-end">
+            <span
+              className={`fs-8 fw-bold ${
+                themeToggle ? "text-info" : "text-success"
+              }`}
+            >
+              {currentDateDay}
+            </span>
+            <span id="err">{errorTodaysDate}</span>
           </span>
-          <span id="err">{errorDateOfBirth}</span>
-        </span>
-      </div>
-      <div>
-        <input
-          id={`${themeToggle ? "birthDateInputDark" : "birthDateInputLight"}`}
-          className={`form-control ${
-            themeToggle ? "bg-dark text-light" : "bg-light text-dark"
-          }`}
-          placeholder="DD/MM/YYYY"
-          value={dateOfBirth}
-          onChange={(e) => setDateOfBirth(e.target.value.toString())}
-        ></input>
-      </div>
-      <div className="text-center mt-3 pt-3">
-        <button
-          className="btn btn-info w-50 p-2"
-          onClick={() => calculateAge()}
-        >
-          Calculate
-        </button>
-        <span className="mx-1"></span>
-        <button className="btn btn-info w-25 p-2" onClick={() => clear()}>
-          Clear
-        </button>
+        </div>
+        <div className="border rounded">
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DesktopDatePicker
+              format="DD-MM-YYYY"
+              value={todayDateValue}
+              className={`form-control ${themeToggle ? "bg-dark" : "bg-light"}`}
+              onChange={(e) => setTodayDateValue(dayjs(e))}
+              slotProps={{
+                popper: {
+                  sx: {
+                    ".MuiPaper-root": {
+                      color: `${
+                        themeToggle ? "white !important" : "black !important"
+                      }`,
+                      backgroundColor: `${themeToggle ? "black" : "whilte"}`,
+                    },
+                    ".MuiButtonBase-root": {
+                      color: `${
+                        themeToggle ? "white !important" : "black !important"
+                      }`,
+                    },
+                    ".MuiTypography-root": {
+                      color: `${
+                        themeToggle ? "white !important" : "black !important"
+                      }`,
+                    },
+                  },
+                },
+                textField: {
+                  sx: {
+                    ".MuiSvgIcon-root": {
+                      color: `${
+                        themeToggle ? "white !important" : "black !important"
+                      }`,
+                      background: `${
+                        themeToggle ? "black !important" : "white !important"
+                      }`,
+                    },
+                    ".MuiInputBase-input": {
+                      color: `${
+                        themeToggle ? "white !important" : "black !important"
+                      }`,
+                      background: "gery",
+                    },
+                    ".MuiButtonBase-root": {
+                      color: `${
+                        themeToggle ? "white !important" : "black !important"
+                      }`,
+                      background: "gery",
+                    },
+                  },
+                },
+              }}
+            />
+          </LocalizationProvider>
+        </div>
+        {/* <div>
+          <input
+            id={`${themeToggle ? "todayDateInputDark" : "todayDateInputLight"}`}
+            className={`form-control ${
+              themeToggle ? "bg-dark text-light" : "bg-light text-dark"
+            }`}
+            placeholder="DD/MM/YYYY"
+            value={todaysDate}
+            onChange={(e) => setTodaysDate(e.target.value)}
+          ></input>
+        </div> */}
+        <div className="row mt-2 pt-2">
+          <span
+            className={`col-5 ${themeToggle ? "text-info" : "text-primary"}`}
+          >
+            <h5>Date of Birth</h5>
+          </span>
+          <span id="inputError" className="col-7 text-danger text-end">
+            <span
+              className={`fs-8 fw-bold ${
+                themeToggle ? "text-info" : "text-success"
+              }`}
+            >
+              {birthDateDay}
+            </span>
+            <span id="err">{errorDateOfBirth}</span>
+          </span>
+        </div>
+        <div className="border rounded">
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DesktopDatePicker
+              format="DD-MM-YYYY"
+              value={value}
+              className={`form-control ${themeToggle ? "bg-dark" : "bg-light"}`}
+              onChange={(e) => setValue(dayjs(e))}
+              slotProps={{
+                popper: {
+                  sx: {
+                    ".MuiPaper-root": {
+                      color: `${
+                        themeToggle ? "white !important" : "black !important"
+                      }`,
+                      backgroundColor: `${themeToggle ? "black" : "whilte"}`,
+                    },
+                    ".MuiButtonBase-root": {
+                      color: `${
+                        themeToggle ? "white !important" : "black !important"
+                      }`,
+                    },
+                    ".MuiTypography-root": {
+                      color: `${
+                        themeToggle ? "white !important" : "black !important"
+                      }`,
+                    },
+                  },
+                },
+                textField: {
+                  sx: {
+                    ".MuiSvgIcon-root": {
+                      color: `${
+                        themeToggle ? "white !important" : "black !important"
+                      }`,
+                      background: `${
+                        themeToggle ? "black !important" : "white !important"
+                      }`,
+                    },
+                    ".MuiInputBase-input": {
+                      color: `${
+                        themeToggle ? "white !important" : "black !important"
+                      }`,
+                      background: "gery",
+                    },
+                    ".MuiButtonBase-root": {
+                      color: `${
+                        themeToggle ? "white !important" : "black !important"
+                      }`,
+                      background: "gery",
+                    },
+                  },
+                },
+              }}
+            />
+          </LocalizationProvider>
+        </div>
+        {/* <div>
+          <input
+            type="date"
+            id={`${themeToggle ? "birthDateInputDark" : "birthDateInputLight"}`}
+            className={`form-control ${
+              themeToggle ? "bg-dark text-light" : "bg-light text-dark"
+            }`}
+            placeholder="DD/MM/YYYY"
+            label="DD/MM/YYYY"
+            value={dateOfBirth}
+            onChange={(newValue) => setDateOfBirth(newValue)}
+          ></input>
+        </div> */}
+
+        <div className="text-center mt-3 pt-3">
+          <button
+            className="btn btn-info w-50 p-2"
+            onClick={() => calculateAge()}
+          >
+            Calculate
+          </button>
+          <span className="mx-1"></span>
+          <button className="btn btn-info w-25 p-2" onClick={() => clear()}>
+            Clear
+          </button>
+        </div>
       </div>
       <Greeting themeToggle={themeToggle} greeting={birthdayGreeting} />
       <div className="mt-2 pt-2">
