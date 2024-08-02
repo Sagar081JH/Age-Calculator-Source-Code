@@ -89,6 +89,7 @@ export const calculate = (
     setTotalWeek("0");
     setTotalMonths("0");
     setTotalDays("0");
+    setIsCalculated(false);
     return;
   }
 
@@ -140,6 +141,7 @@ export const calculate = (
     setTotalHours("");
     setTotalWeek("");
     setTotalMonths("");
+    setIsCalculated(false);
     setDateOfBirthError("Birth date should be less than today's date!");
     return;
   }

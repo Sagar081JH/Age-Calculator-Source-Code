@@ -52,11 +52,8 @@ export default function Form() {
     document.body.style.backgroundColor = "white";
   }
 
-  // calculted
+  // calculation success
   const [isCalculated, setIsCalculated] = useState(false);
-  setTimeout(() => {
-    setIsCalculated(false);
-  }, 5000);
 
   function clear(e) {
     e.preventDefault();
@@ -77,6 +74,7 @@ export default function Form() {
     setTotalMonths("0");
     setTotalDays("0");
     setBirthDayGreeting("");
+    setIsCalculated(false);
   }
 
   return (
@@ -215,34 +213,34 @@ export default function Form() {
           </button>
         </div>
       </form>
-      {/* <h6 className="text-center mt-4 text-success">
-        {isCalculated ? "Calcultaion Success !" : ""}
-      </h6> */}
+
       <Greeting toggleTheme={toggleTheme} greeting={birthdayGreeting} />
-      <div className="mt-2 pt-2">
-        <hr className={`${toggleTheme ? "text-light" : "text-dark"}`} />
-        <Age
-          toggleTheme={toggleTheme}
-          ageYear={year}
-          ageMonth={month}
-          ageDay={day}
-        />
-        <NextBirthday
-          toggleTheme={toggleTheme}
-          nextBirthdayMonths={nextBirthdayMonths}
-          nextBirthdayDays={nextBirthdayDays}
-        />
-        <ExtraInfo
-          toggleTheme={toggleTheme}
-          totalYears={totalYears}
-          totalMonths={totalMonths}
-          totalWeek={totalWeek}
-          totalDays={totalDays}
-          totalHours={totalHours}
-          totalMinutes={totalMinutes}
-          totalSeconds={totalSeconds}
-        />
-      </div>
+      {isCalculated && (
+        <div className="mt-2 pt-2">
+          <hr className={`${toggleTheme ? "text-light" : "text-dark"}`} />
+          <Age
+            toggleTheme={toggleTheme}
+            ageYear={year}
+            ageMonth={month}
+            ageDay={day}
+          />
+          <NextBirthday
+            toggleTheme={toggleTheme}
+            nextBirthdayMonths={nextBirthdayMonths}
+            nextBirthdayDays={nextBirthdayDays}
+          />
+          <ExtraInfo
+            toggleTheme={toggleTheme}
+            totalYears={totalYears}
+            totalMonths={totalMonths}
+            totalWeek={totalWeek}
+            totalDays={totalDays}
+            totalHours={totalHours}
+            totalMinutes={totalMinutes}
+            totalSeconds={totalSeconds}
+          />
+        </div>
+      )}
     </div>
   );
 }
