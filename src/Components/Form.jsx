@@ -60,7 +60,7 @@ export default function Form() {
 
   function clear(e) {
     e.preventDefault();
-    setDateOfBirth("");
+    setDateOfBirth(" ");
     setDateOfBirthError("");
     setTodaysDate(new Date().toISOString().substring(0, 10));
     setYear("0");
