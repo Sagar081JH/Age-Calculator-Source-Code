@@ -1,10 +1,10 @@
 import React from "react";
-import AgeCalculator from "./Components/AgeCalculator";
+import Form from "./Components/Form";
 
 function App() {
   return (
     <div className="App">
-      <AgeCalculator />
+      <Form />
     </div>
   );
 }

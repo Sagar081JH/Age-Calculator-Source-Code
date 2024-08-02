@@ -29,14 +29,6 @@ input::-webkit-calendar-picker-indicator {
   opacity: 0.5;
 }
 
-/* .MuiSvgIcon-root{
-  color: rgb(8, 50, 236);
-}
-
-.MuiInputBase-input{
-  color: rgb(134, 238, 37) !important;
-} */
-
 #todayDateInputDark::label {
   color: white;
   opacity: 0.5;
@@ -53,4 +45,8 @@ input::-webkit-calendar-picker-indicator {
 #birthDateInputLight::placeholder {
   color: black;
   opacity: 0.5;
+}
+
+.MuiOutlinedInput-notchedOutline{
+  border-color: lightblue !important;
 }

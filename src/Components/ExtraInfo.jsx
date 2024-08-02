@@ -1,38 +1,39 @@
 import React from "react";
 
 export default function ExtraInfo({
-  themeToggle,
+  toggleTheme,
   totalYears,
   totalMonths,
   totalWeek,
+  totalDays,
   totalHours,
   totalMinutes,
   totalSeconds,
 }) {
   return (
-    <div className="mt-2 pt-2">
-      <hr className={`${themeToggle ? "text-light" : "text-dark"}`} />
-      <h5 className={`${themeToggle ? "text-info" : "text-primary"}`}>
+    <div className="m-2 p-1">
+      <hr className={`${toggleTheme ? "text-light" : "text-dark"}`} />
+      <h5 className={`${toggleTheme ? "text-info" : "text-primary"}`}>
         Extra Info
       </h5>
-      <div className="mx-5 mt-2 border border-primary rounded">
+      <div className="mx-5 mt-2 p-1 border border-primary rounded">
         <table
           className={`table ${
-            themeToggle ? "table-dark" : "table-light"
+            toggleTheme ? "table-dark" : "table-light"
           } mb-0 pb-0`}
         >
           <tbody>
             <tr>
               <td
                 className={`text-center ${
-                  themeToggle ? "text-info" : "text-success"
+                  toggleTheme ? "text-info" : "text-success"
                 }`}
               >
                 Total Years
               </td>
               <td
                 className={`${
-                  themeToggle ? "text-light" : "text-dark"
+                  toggleTheme ? "text-light" : "text-dark"
                 } text-start`}
               >
                 {totalYears}
@@ -41,14 +42,14 @@ export default function ExtraInfo({
             <tr>
               <td
                 className={`text-center ${
-                  themeToggle ? "text-info" : "text-success"
+                  toggleTheme ? "text-info" : "text-success"
                 }`}
               >
                 Total Months
               </td>
               <td
                 className={` ${
-                  themeToggle ? "text-light" : "text-dark"
+                  toggleTheme ? "text-light" : "text-dark"
                 } text-start`}
               >
                 {totalMonths}
@@ -57,14 +58,14 @@ export default function ExtraInfo({
             <tr>
               <td
                 className={`text-center ${
-                  themeToggle ? "text-info" : "text-success"
+                  toggleTheme ? "text-info" : "text-success"
                 }`}
               >
                 Total Week
               </td>
               <td
                 className={` ${
-                  themeToggle ? "text-light" : "text-dark"
+                  toggleTheme ? "text-light" : "text-dark"
                 } text-start`}
               >
                 {totalWeek}
@@ -73,14 +74,30 @@ export default function ExtraInfo({
             <tr>
               <td
                 className={`text-center ${
-                  themeToggle ? "text-info" : "text-success"
+                  toggleTheme ? "text-info" : "text-success"
+                }`}
+              >
+                Total Days
+              </td>
+              <td
+                className={`${
+                  toggleTheme ? "text-light" : "text-dark"
+                } text-start `}
+              >
+                {totalDays}
+              </td>
+            </tr>
+            <tr>
+              <td
+                className={`text-center ${
+                  toggleTheme ? "text-info" : "text-success"
                 }`}
               >
                 Total Hours
               </td>
               <td
                 className={`${
-                  themeToggle ? "text-light" : "text-dark"
+                  toggleTheme ? "text-light" : "text-dark"
                 } text-start `}
               >
                 {totalHours}
@@ -89,14 +106,14 @@ export default function ExtraInfo({
             <tr>
               <td
                 className={`text-center ${
-                  themeToggle ? "text-info" : "text-success"
+                  toggleTheme ? "text-info" : "text-success"
                 }`}
               >
                 Total Minutes
               </td>
               <td
                 className={` ${
-                  themeToggle ? "text-light" : "text-dark"
+                  toggleTheme ? "text-light" : "text-dark"
                 } text-start`}
               >
                 {totalMinutes}
@@ -105,14 +122,14 @@ export default function ExtraInfo({
             <tr>
               <td
                 className={`text-center ${
-                  themeToggle ? "text-info" : "text-success"
+                  toggleTheme ? "text-info" : "text-success"
                 }`}
               >
                 Total Seconds
               </td>
               <td
                 className={`${
-                  themeToggle ? "text-light" : "text-dark"
+                  toggleTheme ? "text-light" : "text-dark"
                 } text-start `}
               >
                 {totalSeconds}

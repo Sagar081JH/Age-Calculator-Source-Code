@@ -12,3 +12,8 @@ inside scripts paste :
 "deploy":"gh-pages -d build"
 
 npm run deploy
+
+
+[remote "origin"]
+	url = git@github.com:Sagar081JH/AgeCalculatorWeb.git
+	fetch = +refs/heads/*:refs/remotes/origin/*

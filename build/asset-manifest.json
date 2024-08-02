@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/AgeCalculatorWeb/static/css/main.0b75f8f5.css",
-    "main.js": "/AgeCalculatorWeb/static/js/main.15bc389f.js",
-    "static/js/453.ef449f3f.chunk.js": "/AgeCalculatorWeb/static/js/453.ef449f3f.chunk.js",
+    "main.css": "/AgeCalculatorWeb/static/css/main.ca547182.css",
+    "main.js": "/AgeCalculatorWeb/static/js/main.21dc20a7.js",
+    "static/js/453.ded839df.chunk.js": "/AgeCalculatorWeb/static/js/453.ded839df.chunk.js",
     "index.html": "/AgeCalculatorWeb/index.html",
-    "main.0b75f8f5.css.map": "/AgeCalculatorWeb/static/css/main.0b75f8f5.css.map",
-    "main.15bc389f.js.map": "/AgeCalculatorWeb/static/js/main.15bc389f.js.map",
-    "453.ef449f3f.chunk.js.map": "/AgeCalculatorWeb/static/js/453.ef449f3f.chunk.js.map"
+    "main.ca547182.css.map": "/AgeCalculatorWeb/static/css/main.ca547182.css.map",
+    "main.21dc20a7.js.map": "/AgeCalculatorWeb/static/js/main.21dc20a7.js.map",
+    "453.ded839df.chunk.js.map": "/AgeCalculatorWeb/static/js/453.ded839df.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.0b75f8f5.css",
-    "static/js/main.15bc389f.js"
+    "static/css/main.ca547182.css",
+    "static/js/main.21dc20a7.js"
   ]
 }
