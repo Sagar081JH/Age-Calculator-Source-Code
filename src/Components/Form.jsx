@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../AgeCalc.css";
 import Age from "./Age";
 import ExtraInfo from "./ExtraInfo";
@@ -6,6 +6,7 @@ import NextBirthday from "./NextBirthday";
 import Greeting from "./Greeting";
 import DevName from "./DevName";
 import { calculate } from "../Util/CalculateAge";
+import { CurrentTime } from "./CurrentTIme";
 
 export default function Form() {
   //Day
@@ -77,6 +78,14 @@ export default function Form() {
     setIsCalculated(false);
   }
 
+  const [dateTime, setDateTime] = useState("");
+
+  useEffect(() => {
+    setInterval(() => {
+      setDateTime(new Date().toLocaleString());
+    }, 1000);
+  });
+
   return (
     <div className="container p-2">
       <div
@@ -108,8 +117,14 @@ export default function Form() {
         </div>
       </div>
 
-      <DevName toggleTheme={toggleTheme} />
-
+      {/* <DevName toggleTheme={toggleTheme} /> */}
+      <div className="text-center my-3">
+        <span className={`${toggleTheme ? "text-light" : ""}`}>Today : </span>
+        <span className={`${toggleTheme ? "text-info" : "text-success"}`}>
+          {new Date().toUTCString().substring(0, 16)} {new Date().getHours()}:
+          {new Date().getMinutes()}:{new Date().getSeconds()}
+        </span>
+      </div>
       <form
         onSubmit={(e) =>
           calculate(
@@ -162,7 +177,6 @@ export default function Form() {
             type="date"
             min="1900-01-01"
             max="2050-01-01"
-            placeholder="DD/MM/YYY"
             value={todaysDate}
             className={`form-control ${
               toggleTheme ? "bg-dark text-light" : "bg-light"
@@ -191,9 +205,13 @@ export default function Form() {
           <div>
             <input
               type="date"
+              placeholder={`${
+                dateOfBirth == "" || dateOfBirth == " "
+                  ? "Please select a date"
+                  : ""
+              }`}
               min="1900-01-01"
               max="2050-01-01"
-              placeholder="DD/MM/YYY"
               value={dateOfBirth}
               className={`form-control ${
                 toggleTheme ? "bg-dark text-light" : "bg-light"
@@ -224,11 +242,7 @@ export default function Form() {
             ageMonth={month}
             ageDay={day}
           />
-          <NextBirthday
-            toggleTheme={toggleTheme}
-            nextBirthdayMonths={nextBirthdayMonths}
-            nextBirthdayDays={nextBirthdayDays}
-          />
+
           <ExtraInfo
             toggleTheme={toggleTheme}
             totalYears={totalYears}
@@ -238,6 +252,11 @@ export default function Form() {
             totalHours={totalHours}
             totalMinutes={totalMinutes}
             totalSeconds={totalSeconds}
+          />
+          <NextBirthday
+            toggleTheme={toggleTheme}
+            nextBirthdayMonths={nextBirthdayMonths}
+            nextBirthdayDays={nextBirthdayDays}
           />
         </div>
       )}

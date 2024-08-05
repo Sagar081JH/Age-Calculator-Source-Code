@@ -50,3 +50,8 @@ input::-webkit-calendar-picker-indicator {
 .MuiOutlinedInput-notchedOutline{
   border-color: lightblue !important;
 }
+
+input[type="date"]:not(.has-value):before{
+  color: lightgray;
+  content: attr(placeholder);
+}
